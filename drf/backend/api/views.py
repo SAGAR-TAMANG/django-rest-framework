@@ -1,15 +1,22 @@
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from products.models import Product
+from django.forms.models import model_to_dict
 
-def api_home(request, *args, **kwargs):
-  body = request.body # Byte string of JSON data
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from products.serializers import ProductSerializers
+
+@api_view(["GET", "POST"])
+def api_home(request, *args, **kwards):
+  """"
+  DRF API VIEW
+  """
+  instance = Product.objects.all().order_by("?").first()
   data = {}
-  try:
-    data = json.loads(body) # String of JSON -> Python Dict 
-  except Exception as e:
-    pass
-  data['headers'] = request.headers
-  data['content_type'] = request.content_type
-  json.dumps(request.headers)
-  print(data)
-  return JsonResponse({"message":"Hi there! This is your Django API response."})
+  if instance:
+    # data = model_to_dict(model_data, fields=['id', 'title', 'price', 'sale_price'])
+    data = ProductSerializers(instance).data
+  
+  return Response(data)
