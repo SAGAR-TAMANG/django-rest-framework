@@ -8,10 +8,12 @@ class ProductSerializers(serializers.ModelSerializer):
     fields = [
       'title',
       'price',
-      'price',
       'sale_price',
       'discount',
     ]
 
   def get_discount(self, obj):
-    return obj.get_discount()
+    try: 
+      return obj.get_discount()
+    except:
+      return None
