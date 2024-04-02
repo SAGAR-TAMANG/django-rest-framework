@@ -1,3 +1,5 @@
+# this view is before using mixins for Permissions
+
 from rest_framework import generics, mixins, permissions, authentication
 
 from ..api.permissions import IsStaffEditorPermission
